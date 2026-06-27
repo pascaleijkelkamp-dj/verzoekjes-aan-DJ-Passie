@@ -73,9 +73,9 @@
     <label>Foto (optioneel)</label>
     <label class="photo-label" for="photoInput">
       <span class="ico">📷</span>
-      <span id="photoLabelText">Maak of upload een foto</span>
+      <span id="photoLabelText">📷 Foto maken of uploaden</span>
     </label>
-    <input type="file" id="photoInput" accept="image/*" capture="environment">
+    <input type="file" id="photoInput" accept="image/*">
     <div class="photo-preview" id="photoPreview">
       <img id="photoImg" src="" alt="preview">
       <button class="photo-remove" id="photoRemove" type="button">✕</button>
@@ -116,7 +116,7 @@ document.getElementById('photoInput').addEventListener('change', function(){
     var img = document.getElementById('photoImg');
     img.src = e.target.result;
     document.getElementById('photoPreview').style.display = 'block';
-    document.getElementById('photoLabelText').textContent = 'Foto geselecteerd';
+    document.getElementById('photoLabelText').textContent = 'Foto toegevoegd ✓';
     // Compress to max 600px wide
     var canvas = document.createElement('canvas');
     var tmpImg = new Image();
@@ -182,7 +182,7 @@ document.getElementById('anotherBtn').addEventListener('click',function(){
   photoData='';
   document.getElementById('photoInput').value='';
   document.getElementById('photoPreview').style.display='none';
-  document.getElementById('photoLabelText').textContent='Maak of upload een foto';
+  document.getElementById('photoLabelText').textContent='📷 Foto maken of uploaden';
   document.getElementById('successScreen').style.display='none';
   document.getElementById('requestForm').style.display='flex';
   var btn=document.getElementById('submitBtn');
