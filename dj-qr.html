@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR-code aanmaken — DJ Verzoeken</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --accent: #f0c040;
+    --accent-dim: rgba(240,192,64,0.12);
+    --text: #f0ece4;
+    --muted: #777;
+    --border: rgba(255,255,255,0.08);
+    --radius: 14px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px 80px;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  .sub {
+    font-size: 15px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    width: 100%;
+    max-width: 440px;
+    margin-bottom: 20px;
+  }
+
+  .card h2 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+
+  label:first-of-type { margin-top: 0; }
+
+  input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 15px;
+    padding: 12px 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input:focus { border-color: rgba(240,192,64,0.5); }
+  input::placeholder { color: var(--muted); }
+
+  .generate-btn {
+    width: 100%;
+    margin-top: 20px;
+    background: var(--accent);
+    color: #0d0d0d;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s;
+  }
+
+  .generate-btn:hover { opacity: 0.9; }
+
+  .qr-card {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    width: 100%;
+    max-width: 440px;
+    align-items: center;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .qr-wrapper {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    display: inline-block;
+  }
+
+  #qrcode canvas, #qrcode img { display: block; }
+
+  .qr-event-name {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .qr-url {
+    font-size: 12px;
+    color: var(--muted);
+    word-break: break-all;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 8px;
+    font-family: monospace;
+  }
+
+  .action-btns {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .action-btn {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.12s;
+  }
+
+  .action-btn:hover { background: var(--surface2); }
+  .action-btn.primary {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-color: rgba(240,192,64,0.3);
+  }
+
+  .tip {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+    max-width: 360px;
+  }
+
+  .tip a { color: var(--accent); text-decoration: none; }
+
+  .nav-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🎵 QR-code aanmaken</h1>
+<p class="sub">Hang de QR-code op — gasten scannen en vragen direct nummers aan.</p>
+
+<div class="card">
+  <h2>Instellingen</h2>
+  <label>Naam van het evenement</label>
+  <input type="text" id="eventName" placeholder="bijv. Bruiloft Sara & Tom" value="">
+  <label>URL van de verzoekpagina</label>
+  <input type="url" id="pageUrl" placeholder="Wordt automatisch ingevuld…" id="pageUrl">
+  <button class="generate-btn" id="genBtn">QR-code genereren</button>
+</div>
+
+<div class="qr-card" id="qrCard">
+  <div class="qr-event-name" id="qrEventName"></div>
+  <div class="qr-wrapper">
+    <div id="qrcode"></div>
+  </div>
+  <div class="qr-url" id="qrUrl"></div>
+  <div class="action-btns">
+    <button class="action-btn primary" id="downloadBtn">⬇ Downloaden</button>
+    <button class="action-btn" id="printBtn">🖨 Afdrukken</button>
+  </div>
+</div>
+
+<p class="tip">Deel de QR-code als afdruk, op een scherm, of stuur de link direct via WhatsApp.<br>De <a href="dj-dashboard.html">DJ-pagina</a> ververst automatisch elke 3 seconden.</p>
+
+<div class="nav-links">
+  <a href="dj-request.html" class="nav-link">📱 Verzoekpagina</a>
+  <a href="dj-dashboard.html" class="nav-link">🎧 DJ Dashboard</a>
+</div>
+
+<script>
+  const urlInput = document.getElementById('pageUrl');
+  const base = window.location.href.replace('dj-qr.html', 'dj-request.html');
+  urlInput.value = base;
+
+  document.getElementById('genBtn').addEventListener('click', () => {
+    const eventName = document.getElementById('eventName').value.trim() || 'Verzoekjes';
+    const url = urlInput.value.trim();
+    if (!url) { alert('Voer een URL in'); return; }
+
+    document.getElementById('qrcode').innerHTML = '';
+    new QRCode(document.getElementById('qrcode'), {
+      text: url,
+      width: 240,
+      height: 240,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    document.getElementById('qrEventName').textContent = eventName;
+    document.getElementById('qrUrl').textContent = url;
+    document.getElementById('qrCard').style.display = 'flex';
+    document.getElementById('qrCard').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    setTimeout(() => {
+      const canvas = document.querySelector('#qrcode canvas');
+      if (!canvas) { alert('Genereer eerst een QR-code'); return; }
+      const bigCanvas = document.createElement('canvas');
+      bigCanvas.width = 400;
+      bigCanvas.height = 460;
+      const ctx = bigCanvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 400, 460);
+      ctx.drawImage(canvas, 80, 80, 240, 240);
+      ctx.fillStyle = '#111';
+      ctx.font = 'bold 18px Helvetica Neue, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      const name = document.getElementById('qrEventName').textContent;
+      ctx.fillText(name, 200, 50);
+      ctx.fillStyle = '#555';
+      ctx.font = '13px Helvetica Neue, Arial, sans-serif';
+      ctx.fillText('Scan voor verzoekjes', 200, 350);
+      const link = document.createElement('a');
+      link.download = 'dj-verzoeken-qr.png';
+      link.href = bigCanvas.toDataURL('image/png');
+      link.click();
+    }, 100);
+  });
+
+  document.getElementById('printBtn').addEventListener('click', () => {
+    window.print();
+  });
+</script>
+
+<style media="print">
+  body { background: white; color: black; align-items: center; justify-content: center; }
+  .card, .generate-btn, .nav-links, .tip, h1, .sub { display: none !important; }
+  .qr-card {
+    display: flex !important;
+    background: white;
+    border: none;
+    color: black;
+    padding: 0;
+  }
+  .qr-event-name { font-size: 28px; color: black; }
+  .qr-url { color: #555; background: #f5f5f5; }
+  .action-btns { display: none !important; }
+</style>
+</body>
+</html>
