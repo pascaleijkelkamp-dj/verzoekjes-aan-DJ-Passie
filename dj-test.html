@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJ Test</title>
+<style>
+  body { font-family: sans-serif; padding: 20px; background: #111; color: #fff; }
+  .box { background: #222; border-radius: 10px; padding: 16px; margin-bottom: 12px; font-size: 14px; }
+  .ok { border-left: 4px solid #4cdc8c; }
+  .err { border-left: 4px solid #e06060; }
+  .info { border-left: 4px solid #f0c040; }
+  button { background: #f0c040; color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; font-weight: 700; width: 100%; margin-top: 8px; }
+</style>
+</head>
+<body>
+<h2 style="color:#f0c040">DJ Passie — Debug</h2>
+<div id="log"></div>
+<button onclick="runTest()">Test verbinding</button>
+
+<script>
+var BIN_ID = '6a3fc556da38895dfe07495f';
+var API_KEY = ['$2a','$10','$HSvUEG7Tte2c3RiQCZi1XOctWbQheMAIwQqt.EewSIyP6xB5zmGJi'].join('');
+
+function log(msg, type) {
+  var d = document.createElement('div');
+  d.className = 'box ' + (type||'info');
+  d.textContent = msg;
+  document.getElementById('log').appendChild(d);
+}
+
+log('Browser: ' + navigator.userAgent.substring(0,80));
+log('Protocol: ' + location.protocol);
+
+async function runTest() {
+  document.getElementById('log').innerHTML = '';
+  log('Browser: ' + navigator.userAgent.substring(0,60));
+  log('Protocol: ' + location.protocol);
+  log('API key lengte: ' + API_KEY.length);
+  log('BIN ID: ' + BIN_ID);
+
+  // Stap 1: GET
+  log('Stap 1: ophalen bin...', 'info');
+  try {
+    var r = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
+      method: 'GET',
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    log('GET status: ' + r.status, r.ok ? 'ok' : 'err');
+    if (!r.ok) {
+      var txt = await r.text();
+      log('GET fout: ' + txt, 'err');
+      return;
+    }
+    var data = await r.json();
+    log('GET OK - records: ' + (data.record||[]).length, 'ok');
+  } catch(e) {
+    log('GET exception: ' + e.message, 'err');
+    return;
+  }
+
+  // Stap 2: PUT
+  log('Stap 2: testverzoek versturen...', 'info');
+  try {
+    var payload = JSON.stringify([{id:1,song:'Test',name:'Test',message:'',time:'12:00',status:'nieuw'}]);
+    var p = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY
+      },
+      body: payload
+    });
+    log('PUT status: ' + p.status, p.ok ? 'ok' : 'err');
+    if (!p.ok) {
+      var txt2 = await p.text();
+      log('PUT fout: ' + txt2, 'err');
+    } else {
+      log('PUT OK - alles werkt!', 'ok');
+    }
+  } catch(e) {
+    log('PUT exception: ' + e.message, 'err');
+  }
+}
+
+runTest();
+</script>
+</body>
+</html>
