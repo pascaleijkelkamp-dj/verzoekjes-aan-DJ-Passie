@@ -77,7 +77,7 @@
   <div class="cf-title">🎉 Eigen feestje plannen?</div>
   <p>Zelf een DJ nodig voor jouw feest of evenement?<br>Bel of app <strong>DJ Passie</strong> en informeer vrijblijvend naar de mogelijkheden.</p>
   <span class="phone">📞 +31 6 83 67 26 21</span>
-  <a class="save-btn" id="saveContact" href="#">📱 Sla op in contacten</a>
+  <a class="save-btn" href="https://pascaleijkelkamp-dj.github.io/verzoekjes-aan-DJ-Passie/DJ-Passie.vcf">👤 Sla DJ Passie op in contacten</a>
 </div>
 
 <a href="dj-dashboard.html" class="dj-link">🎧 DJ</a>
@@ -131,15 +131,7 @@ document.getElementById('anotherBtn').addEventListener('click',function(){
   btn.disabled=false;btn.textContent='Verstuur verzoek';
 });
 
-document.getElementById('saveContact').addEventListener('click',function(e){
-  e.preventDefault();
-  var vcard=['BEGIN:VCARD','VERSION:3.0','FN:DJ Passie','N:Passie;DJ;;;','TEL;TYPE=CELL:+31683672621','NOTE:DJ voor feesten en evenementen','END:VCARD'].join('\r\n');
-  var blob=new Blob([vcard],{type:'text/vcard'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-  a.href=url;a.download='DJ-Passie.vcf';a.click();
-  URL.revokeObjectURL(url);
-});
+// contact via direct link
 </script>
 </body>
 </html>
