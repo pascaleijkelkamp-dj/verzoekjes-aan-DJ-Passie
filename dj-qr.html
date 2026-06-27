@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QR-code aanmaken — DJ Verzoeken</title>
+<title>QR-code — DJ Passie</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -205,13 +205,13 @@
 </head>
 <body>
 
-<h1>🎵 QR-code aanmaken</h1>
+<h1>🎵 QR-code voor DJ Passie</h1>
 <p class="sub">Hang de QR-code op — gasten scannen en vragen direct nummers aan.</p>
 
 <div class="card">
   <h2>Instellingen</h2>
   <label>Naam van het evenement</label>
-  <input type="text" id="eventName" placeholder="bijv. Bruiloft Sara & Tom" value="">
+  <input type="text" id="eventName" placeholder="bijv. Bruiloft Sara & Tom" value="DJ Passie">
   <label>URL van de verzoekpagina</label>
   <input type="url" id="pageUrl" placeholder="Wordt automatisch ingevuld…" id="pageUrl">
   <button class="generate-btn" id="genBtn">QR-code genereren</button>
@@ -238,7 +238,9 @@
 
 <script>
   const urlInput = document.getElementById('pageUrl');
-  const base = window.location.href.replace('dj-qr.html', 'dj-request.html');
+  const base = window.location.href.includes('github.io')
+    ? 'https://pascaleijkelkamp-dj.github.io/verzoekjes-aan-DJ-Passie/dj-request.html'
+    : window.location.href.replace('dj-qr.html', 'dj-request.html');
   urlInput.value = base;
 
   document.getElementById('genBtn').addEventListener('click', () => {

@@ -3,299 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DJ Dashboard</title>
+<title>DJ Passie — Dashboard</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #0d0d0d;
-    --surface: #1a1a1a;
-    --surface2: #242424;
-    --accent: #f0c040;
-    --accent-dim: rgba(240,192,64,0.12);
-    --green: #4cdc8c;
-    --green-dim: rgba(76,220,140,0.12);
-    --red-dim: rgba(220,80,80,0.12);
-    --red: #e06060;
-    --text: #f0ece4;
-    --muted: #777;
-    --border: rgba(255,255,255,0.08);
-    --radius: 12px;
+    --bg: #0d0d0d; --surface: #1a1a1a; --surface2: #242424;
+    --accent: #f0c040; --accent-dim: rgba(240,192,64,0.12);
+    --green: #4cdc8c; --green-dim: rgba(76,220,140,0.12);
+    --red-dim: rgba(220,80,80,0.12); --red: #e06060;
+    --text: #f0ece4; --muted: #777; --border: rgba(255,255,255,0.08); --radius: 12px;
   }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    min-height: 100vh;
-  }
-
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: rgba(13,13,13,0.95);
-    backdrop-filter: blur(8px);
-    z-index: 10;
-  }
-
-  .header-left h1 {
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-
-  .header-left .live-dot {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--green);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-top: 3px;
-  }
-
-  .dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--green);
-    animation: pulse 1.8s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .stats {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .stat {
-    text-align: center;
-  }
-
-  .stat-num {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-top: 2px;
-  }
-
-  .divider {
-    width: 1px;
-    height: 32px;
-    background: var(--border);
-  }
-
-  .tabs {
-    display: flex;
-    padding: 12px 20px 0;
-    gap: 4px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .tab {
-    font-size: 13px;
-    font-weight: 600;
-    padding: 8px 16px 10px;
-    border-radius: 8px 8px 0 0;
-    cursor: pointer;
-    color: var(--muted);
-    transition: color 0.15s;
-    border: none;
-    background: none;
-    font-family: inherit;
-    position: relative;
-  }
-
-  .tab.active {
-    color: var(--text);
-  }
-
-  .tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--accent);
-    border-radius: 99px;
-  }
-
-  .tab .count {
-    background: var(--accent-dim);
-    color: var(--accent);
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 99px;
-    margin-left: 4px;
-  }
-
-  main {
-    padding: 16px 20px;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 60px 0;
-    color: var(--muted);
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'Helvetica Neue', Arial, sans-serif; min-height: 100vh; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(13,13,13,0.95); backdrop-filter: blur(8px); z-index: 10; }
+  .header-left h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+  .live-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.8s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .stats { display: flex; gap: 12px; align-items: center; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 700; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 2px; }
+  .divider { width: 1px; height: 32px; background: var(--border); }
+  .tabs { display: flex; padding: 12px 20px 0; gap: 4px; border-bottom: 1px solid var(--border); }
+  .tab { font-size: 13px; font-weight: 600; padding: 8px 16px 10px; border-radius: 8px 8px 0 0; cursor: pointer; color: var(--muted); transition: color 0.15s; border: none; background: none; font-family: inherit; position: relative; }
+  .tab.active { color: var(--text); }
+  .tab.active::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(--accent); border-radius:99px; }
+  .tab .count { background: var(--accent-dim); color: var(--accent); font-size: 10px; padding: 2px 6px; border-radius: 99px; margin-left: 4px; }
+  main { padding: 16px 20px; max-width: 600px; margin: 0 auto; }
+  .empty-state { text-align: center; padding: 60px 0; color: var(--muted); }
   .empty-state .icon { font-size: 40px; margin-bottom: 12px; }
-  .empty-state p { font-size: 15px; }
-
-  .request-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    transition: border-color 0.2s;
-    animation: slideIn 0.25s ease;
-  }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .request-card.new-card {
-    border-color: rgba(240,192,64,0.4);
-    background: var(--surface2);
-  }
-
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .song-name {
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1.3;
-    flex: 1;
-  }
-
-  .time-badge {
-    font-size: 11px;
-    color: var(--muted);
-    white-space: nowrap;
-    padding-top: 2px;
-  }
-
-  .requester {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 6px;
-  }
-
+  .request-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; transition: border-color 0.2s; animation: slideIn 0.25s ease; }
+  @keyframes slideIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+  .request-card.new-card { border-color: rgba(240,192,64,0.4); background: var(--surface2); }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+  .song-name { font-size: 16px; font-weight: 700; line-height: 1.3; flex: 1; }
+  .time-badge { font-size: 11px; color: var(--muted); white-space: nowrap; padding-top: 2px; }
+  .requester { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
   .requester strong { color: var(--accent); font-weight: 600; }
-
-  .note {
-    font-size: 13px;
-    color: var(--text);
-    background: var(--surface2);
-    border-radius: 8px;
-    padding: 8px 10px;
-    margin-bottom: 10px;
-    line-height: 1.5;
-    border-left: 2px solid rgba(240,192,64,0.3);
-  }
-
-  .card-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .action-btn {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 7px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text);
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.12s;
-  }
-
+  .note { font-size: 13px; color: var(--text); background: var(--surface2); border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; line-height: 1.5; border-left: 2px solid rgba(240,192,64,0.3); }
+  .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .action-btn { font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; font-family: inherit; transition: background 0.12s; }
   .action-btn:hover { background: var(--surface2); }
-
-  .action-btn.play {
-    background: var(--green-dim);
-    color: var(--green);
-    border-color: rgba(76,220,140,0.25);
-  }
-
-  .action-btn.skip {
-    background: var(--red-dim);
-    color: var(--red);
-    border-color: rgba(220,80,80,0.2);
-  }
-
-  .action-btn.done {
-    opacity: 0.5;
-  }
-
-  .status-pill {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 99px;
-    margin-left: 6px;
-  }
-
+  .action-btn.play { background: var(--green-dim); color: var(--green); border-color: rgba(76,220,140,0.25); }
+  .action-btn.skip { background: var(--red-dim); color: var(--red); border-color: rgba(220,80,80,0.2); }
+  .status-pill { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; margin-left: 6px; }
   .status-pill.speelt { background: var(--green-dim); color: var(--green); }
   .status-pill.gespeeld { background: rgba(255,255,255,0.06); color: var(--muted); }
   .status-pill.overgeslagen { background: var(--red-dim); color: var(--red); }
-
-  .clear-btn {
-    display: block;
-    width: 100%;
-    margin-top: 16px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 12px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-family: inherit;
-    transition: border-color 0.15s, color 0.15s;
-  }
-
+  .clear-btn { display: block; width: 100%; margin-top: 16px; background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 13px; font-weight: 600; padding: 12px; border-radius: var(--radius); cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; }
   .clear-btn:hover { border-color: var(--red); color: var(--red); }
-
+  .setup-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+  .setup-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px; width: 100%; max-width: 400px; }
+  .setup-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .setup-card p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+  .setup-card label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px; margin-top: 14px; }
+  .setup-card input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; padding: 11px 14px; font-family: monospace; outline: none; }
+  .setup-card input:focus { border-color: rgba(240,192,64,0.5); }
+  .setup-save { width: 100%; margin-top: 20px; background: var(--accent); color: #0d0d0d; font-size: 15px; font-weight: 700; padding: 14px; border: none; border-radius: var(--radius); cursor: pointer; font-family: inherit; }
+  .setup-link { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.6; }
+  .setup-link a { color: var(--accent); }
   #noRequests { display: none; }
 </style>
 </head>
@@ -303,19 +69,13 @@
 
 <header>
   <div class="header-left">
-    <h1>🎧 DJ Dashboard</h1>
+    <h1>🎧 DJ Passie</h1>
     <div class="live-dot"><div class="dot"></div>Live</div>
   </div>
   <div class="stats">
-    <div class="stat">
-      <div class="stat-num" id="statNew">0</div>
-      <div class="stat-label">Nieuw</div>
-    </div>
+    <div class="stat"><div class="stat-num" id="statNew">0</div><div class="stat-label">Nieuw</div></div>
     <div class="divider"></div>
-    <div class="stat">
-      <div class="stat-num" id="statTotal">0</div>
-      <div class="stat-label">Totaal</div>
-    </div>
+    <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Totaal</div></div>
   </div>
 </header>
 
@@ -334,26 +94,66 @@
   <button class="clear-btn" id="clearBtn" style="display:none">Alles wissen</button>
 </main>
 
+<!-- Setup modal -->
+<div class="setup-modal" id="setupModal" style="display:none">
+  <div class="setup-card">
+    <h2>⚙️ Eenmalige setup</h2>
+    <p>Voer je JSONbin gegevens in. Dit doe je maar één keer — daarna onthoudt de browser het.</p>
+    <label>BIN ID</label>
+    <input type="text" id="inputBinId" placeholder="bijv. 64a1b2c3d4e5f6..." autocomplete="off">
+    <label>Master Key (API key)</label>
+    <input type="password" id="inputApiKey" placeholder="$2b$10$..." autocomplete="off">
+    <button class="setup-save" id="saveSetup">Opslaan en starten</button>
+    <div class="setup-link">
+      Nog geen JSONbin account?<br>
+      <a href="https://jsonbin.io" target="_blank">Maak gratis aan op jsonbin.io</a> →
+      maak een lege BIN aan met inhoud <code style="font-size:11px">[]</code>
+    </div>
+  </div>
+</div>
+
 <script>
-const STORAGE_KEY = 'dj_requests_v1';
+let BIN_ID = localStorage.getItem('djp_bin_id') || '';
+let API_KEY = localStorage.getItem('djp_api_key') || '';
 let allRequests = [];
 let currentTab = 'nieuw';
 let knownIds = new Set();
 let isFirstLoad = true;
 
+if (!BIN_ID || !API_KEY) {
+  document.getElementById('setupModal').style.display = 'flex';
+}
+
+document.getElementById('saveSetup').addEventListener('click', () => {
+  const b = document.getElementById('inputBinId').value.trim();
+  const k = document.getElementById('inputApiKey').value.trim();
+  if (!b || !k) { alert('Vul beide velden in'); return; }
+  localStorage.setItem('djp_bin_id', b);
+  localStorage.setItem('djp_api_key', k);
+  BIN_ID = b; API_KEY = k;
+  document.getElementById('setupModal').style.display = 'none';
+  poll();
+});
+
 async function loadRequests() {
+  if (!BIN_ID || !API_KEY) return [];
   try {
-    const res = await window.storage.get(STORAGE_KEY, true);
-    if (res && res.value) {
-      return JSON.parse(res.value);
-    }
-  } catch(e) {}
-  return [];
+    const res = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    const data = await res.json();
+    return Array.isArray(data.record) ? data.record : [];
+  } catch(e) { return []; }
 }
 
 async function saveRequests(reqs) {
+  if (!BIN_ID || !API_KEY) return;
   try {
-    await window.storage.set(STORAGE_KEY, JSON.stringify(reqs), true);
+    await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+      body: JSON.stringify(reqs)
+    });
   } catch(e) {}
 }
 
@@ -363,32 +163,27 @@ function getFiltered() {
   return allRequests;
 }
 
+function escHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 function renderRequests() {
   const list = document.getElementById('requestList');
   const filtered = getFiltered();
   const newCount = allRequests.filter(r => r.status === 'nieuw').length;
-
   document.getElementById('statNew').textContent = newCount;
   document.getElementById('statTotal').textContent = allRequests.length;
   document.getElementById('newCount').textContent = newCount;
-
   document.getElementById('clearBtn').style.display = allRequests.length > 0 ? 'block' : 'none';
   document.getElementById('noRequests').style.display = filtered.length === 0 ? 'block' : 'none';
+  if (filtered.length === 0) { list.innerHTML = ''; return; }
 
-  if (filtered.length === 0) {
-    list.innerHTML = '';
-    return;
-  }
-
-  const existingIds = new Set([...list.querySelectorAll('[data-id]')].map(el => el.dataset.id));
   const filteredIds = new Set(filtered.map(r => String(r.id)));
-
-  [...list.querySelectorAll('[data-id]')].forEach(el => {
-    if (!filteredIds.has(el.dataset.id)) el.remove();
-  });
+  [...list.querySelectorAll('[data-id]')].forEach(el => { if (!filteredIds.has(el.dataset.id)) el.remove(); });
 
   filtered.forEach((req, idx) => {
-    const existing = list.querySelector(`[data-id="${req.id}"]`);
+    const existing = list.querySelector('[data-id="' + req.id + '"]');
     if (existing) {
       const pill = existing.querySelector('.status-pill');
       if (pill) {
@@ -399,49 +194,21 @@ function renderRequests() {
       }
       return;
     }
-
     const isNew = !knownIds.has(req.id) && !isFirstLoad;
     const card = document.createElement('div');
     card.className = 'request-card' + (isNew ? ' new-card' : '');
     card.dataset.id = req.id;
-
     let pillHtml = '';
     if (req.status === 'speelt') pillHtml = '<span class="status-pill speelt">Speelt nu</span>';
     else if (req.status === 'gespeeld') pillHtml = '<span class="status-pill gespeeld">Gespeeld</span>';
     else if (req.status === 'overgeslagen') pillHtml = '<span class="status-pill overgeslagen">Overgeslagen</span>';
-
-    card.innerHTML = `
-      <div class="card-top">
-        <div class="song-name">${escHtml(req.song)}${pillHtml}</div>
-        <div class="time-badge">${escHtml(req.time)}</div>
-      </div>
-      <div class="requester">Door <strong>${escHtml(req.name)}</strong></div>
-      ${req.message ? `<div class="note">"${escHtml(req.message)}"</div>` : ''}
-      <div class="card-actions">
-        <button class="action-btn play" data-action="speelt" data-id="${req.id}">▶ Speel nu</button>
-        <button class="action-btn" data-action="gespeeld" data-id="${req.id}">✓ Gespeeld</button>
-        <button class="action-btn skip" data-action="overgeslagen" data-id="${req.id}">✕ Sla over</button>
-      </div>
-    `;
-
-    if (isNew) {
-      setTimeout(() => card.classList.remove('new-card'), 3000);
-    }
-
-    if (idx === 0) list.prepend(card);
-    else {
-      const cards = list.querySelectorAll('[data-id]');
-      if (idx < cards.length) list.insertBefore(card, cards[idx]);
-      else list.appendChild(card);
-    }
+    card.innerHTML = '<div class="card-top"><div class="song-name">' + escHtml(req.song) + pillHtml + '</div><div class="time-badge">' + escHtml(req.time) + '</div></div><div class="requester">Door <strong>' + escHtml(req.name) + '</strong></div>' + (req.message ? '<div class="note">"' + escHtml(req.message) + '"</div>' : '') + '<div class="card-actions"><button class="action-btn play" data-action="speelt" data-id="' + req.id + '">▶ Speel nu</button><button class="action-btn" data-action="gespeeld" data-id="' + req.id + '">✓ Gespeeld</button><button class="action-btn skip" data-action="overgeslagen" data-id="' + req.id + '">✕ Sla over</button></div>';
+    if (isNew) setTimeout(() => card.classList.remove('new-card'), 3000);
+    const cards = list.querySelectorAll('[data-id]');
+    if (idx < cards.length) list.insertBefore(card, cards[idx]);
+    else list.appendChild(card);
   });
-
   filtered.forEach(r => knownIds.add(r.id));
-}
-
-function escHtml(str) {
-  if (!str) return '';
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 document.getElementById('requestList').addEventListener('click', async (e) => {
@@ -467,8 +234,7 @@ document.querySelectorAll('.tab').forEach(tab => {
 
 document.getElementById('clearBtn').addEventListener('click', async () => {
   if (!confirm('Alle verzoeken wissen?')) return;
-  allRequests = [];
-  knownIds = new Set();
+  allRequests = []; knownIds = new Set();
   await saveRequests([]);
   renderRequests();
 });
@@ -477,14 +243,10 @@ async function poll() {
   const fresh = await loadRequests();
   const hasNew = fresh.some(r => !knownIds.has(r.id));
   allRequests = fresh;
-  if (hasNew || isFirstLoad) {
-    renderRequests();
-    isFirstLoad = false;
-  }
+  if (hasNew || isFirstLoad) { renderRequests(); isFirstLoad = false; }
 }
 
-poll();
-setInterval(poll, 3000);
+if (BIN_ID && API_KEY) { poll(); setInterval(poll, 4000); }
 </script>
 </body>
 </html>

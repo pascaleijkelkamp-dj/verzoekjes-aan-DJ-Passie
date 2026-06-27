@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verzoekje aanvragen</title>
+<title>Verzoekje aan DJ Passie</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --bg: #0d0d0d;
     --surface: #1a1a1a;
@@ -18,195 +17,43 @@
     --border: rgba(255,255,255,0.08);
     --radius: 14px;
   }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 0 80px;
-  }
-
-  header {
-    width: 100%;
-    padding: 48px 24px 32px;
-    text-align: center;
-  }
-
-  .badge {
-    display: inline-block;
-    background: var(--accent-dim);
-    color: var(--accent);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 5px 14px;
-    border-radius: 99px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(240,192,64,0.25);
-  }
-
-  h1 {
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin-bottom: 10px;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'Helvetica Neue', Arial, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0 0 80px; }
+  header { width: 100%; padding: 48px 24px 32px; text-align: center; }
+  .badge { display: inline-block; background: var(--accent-dim); color: var(--accent); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 14px; border-radius: 99px; margin-bottom: 20px; border: 1px solid rgba(240,192,64,0.25); }
+  h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 10px; }
   h1 span { color: var(--accent); }
-
-  .sub {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-
-  form {
-    width: 100%;
-    max-width: 420px;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  label {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    display: block;
-    margin-bottom: 6px;
-  }
-
-  input, textarea {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-size: 16px;
-    padding: 14px 16px;
-    font-family: inherit;
-    transition: border-color 0.15s;
-    outline: none;
-    -webkit-appearance: none;
-  }
-
-  input:focus, textarea:focus {
-    border-color: rgba(240,192,64,0.5);
-    background: var(--surface2);
-  }
-
+  .sub { font-size: 15px; color: var(--muted); line-height: 1.5; }
+  form { width: 100%; max-width: 420px; padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
+  label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px; }
+  input, textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 16px; padding: 14px 16px; font-family: inherit; transition: border-color 0.15s; outline: none; -webkit-appearance: none; }
+  input:focus, textarea:focus { border-color: rgba(240,192,64,0.5); background: var(--surface2); }
   input::placeholder, textarea::placeholder { color: var(--muted); }
-
-  textarea {
-    resize: none;
-    min-height: 80px;
-    line-height: 1.5;
-  }
-
-  .submit-btn {
-    margin-top: 6px;
-    width: 100%;
-    background: var(--accent);
-    color: #0d0d0d;
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    padding: 16px;
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
-    font-family: inherit;
-  }
-
+  textarea { resize: none; min-height: 80px; line-height: 1.5; }
+  .submit-btn { margin-top: 6px; width: 100%; background: var(--accent); color: #0d0d0d; font-size: 16px; font-weight: 700; padding: 16px; border: none; border-radius: var(--radius); cursor: pointer; transition: opacity 0.15s, transform 0.1s; font-family: inherit; }
   .submit-btn:active { transform: scale(0.98); opacity: 0.9; }
   .submit-btn:disabled { opacity: 0.4; cursor: default; }
-
-  .success-screen {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 60px 24px 0;
-    gap: 16px;
-  }
-
-  .check-circle {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: var(--accent-dim);
-    border: 2px solid var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-  }
-
-  .success-screen h2 {
-    font-size: 24px;
-    font-weight: 700;
-  }
-
-  .success-screen p {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.6;
-    max-width: 280px;
-  }
-
-  .another-btn {
-    margin-top: 12px;
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--border);
-    font-size: 15px;
-    font-weight: 600;
-    padding: 13px 28px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  .dj-link {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 8px 14px;
-    border-radius: 99px;
-    letter-spacing: 0.05em;
-  }
-
-  .error-msg {
-    font-size: 13px;
-    color: #e06060;
-    display: none;
-    margin-top: -6px;
-  }
+  .success-screen { display: none; flex-direction: column; align-items: center; text-align: center; padding: 60px 24px 0; gap: 16px; }
+  .check-circle { width: 72px; height: 72px; border-radius: 50%; background: var(--accent-dim); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 30px; }
+  .success-screen h2 { font-size: 24px; font-weight: 700; }
+  .success-screen p { font-size: 15px; color: var(--muted); line-height: 1.6; max-width: 280px; }
+  .another-btn { margin-top: 12px; background: var(--surface); color: var(--text); border: 1px solid var(--border); font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: var(--radius); cursor: pointer; font-family: inherit; }
+  .dj-link { position: fixed; bottom: 20px; right: 20px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 12px; font-weight: 600; text-decoration: none; padding: 8px 14px; border-radius: 99px; letter-spacing: 0.05em; }
+  .error-msg { font-size: 13px; color: #e06060; display: none; margin-top: -6px; }
+  .setup-banner { background: rgba(240,192,64,0.1); border: 1px solid rgba(240,192,64,0.3); border-radius: 10px; padding: 14px 16px; font-size: 13px; color: var(--accent); line-height: 1.6; margin: 0 20px 20px; max-width: 420px; width: calc(100% - 40px); }
+  .setup-banner a { color: var(--accent); }
 </style>
 </head>
 <body>
 
 <header>
   <div class="badge">🎵 Verzoekjes</div>
-  <h1>Vraag een nummer<br>aan voor de <span>DJ</span></h1>
+  <h1>Vraag een nummer<br>aan voor <span>DJ Passie</span></h1>
   <p class="sub">Vul het formulier in en<br>je verzoek gaat direct naar de mixer.</p>
 </header>
+
+<div class="setup-banner" id="setupBanner" style="display:none">
+  ⚙️ <strong>Eenmalige setup nodig:</strong> voer eerst een BIN-ID in via de DJ-link rechtsonder.
+</div>
 
 <form id="requestForm">
   <div>
@@ -228,57 +75,57 @@
 <div class="success-screen" id="successScreen">
   <div class="check-circle">✓</div>
   <h2>Verzoek verstuurd!</h2>
-  <p>De DJ heeft jouw nummer ontvangen. Houd de dansvloer in de gaten!</p>
+  <p>DJ Passie heeft jouw nummer ontvangen. Houd de dansvloer in de gaten!</p>
   <button class="another-btn" id="anotherBtn">Nog een verzoek</button>
 </div>
 
 <a href="dj-dashboard.html" class="dj-link">🎧 DJ</a>
 
 <script>
-const STORAGE_KEY = 'dj_requests_v1';
+const BIN_ID = localStorage.getItem('djp_bin_id') || '';
+const API_KEY = localStorage.getItem('djp_api_key') || '';
+
+if (!BIN_ID || !API_KEY) {
+  document.getElementById('setupBanner').style.display = 'block';
+}
 
 async function saveRequest(req) {
+  if (!BIN_ID || !API_KEY) return false;
   try {
-    let existing = [];
-    try {
-      const res = await window.storage.get(STORAGE_KEY, true);
-      if (res && res.value) existing = JSON.parse(res.value);
-    } catch(e) {}
+    const getRes = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID + '/latest', {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    const getData = await getRes.json();
+    const existing = getData.record || [];
     existing.unshift(req);
-    if (existing.length > 100) existing = existing.slice(0, 100);
-    await window.storage.set(STORAGE_KEY, JSON.stringify(existing), true);
-    return true;
-  } catch(e) {
-    return false;
-  }
+    const putRes = await fetch('https://api.jsonbin.io/v3/b/' + BIN_ID, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+      body: JSON.stringify(existing.slice(0, 100))
+    });
+    return putRes.ok;
+  } catch(e) { return false; }
 }
 
 document.getElementById('requestForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const song = document.getElementById('song').value.trim();
-  const name = document.getElementById('name').value.trim();
-  const message = document.getElementById('message').value.trim();
   if (!song) return;
-
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = 'Versturen…';
-
   const req = {
     id: Date.now(),
     song,
-    name: name || 'Anoniem',
-    message,
+    name: document.getElementById('name').value.trim() || 'Anoniem',
+    message: document.getElementById('message').value.trim(),
     time: new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' }),
     status: 'nieuw'
   };
-
   const ok = await saveRequest(req);
-
   if (ok) {
     document.getElementById('requestForm').style.display = 'none';
-    const ss = document.getElementById('successScreen');
-    ss.style.display = 'flex';
+    document.getElementById('successScreen').style.display = 'flex';
   } else {
     document.getElementById('errorMsg').style.display = 'block';
     btn.disabled = false;
