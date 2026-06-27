@@ -38,14 +38,6 @@
   .contact-footer .phone { font-size:20px;font-weight:700;color:#fff;letter-spacing:.02em;margin-bottom:24px;display:block; }
   .save-btn { display:inline-flex;align-items:center;gap:10px;background:var(--accent);border:none;color:#0d0d0d;font-size:15px;font-weight:700;padding:15px 28px;border-radius:99px;cursor:pointer;font-family:inherit;text-decoration:none;transition:opacity .15s; }
   .save-btn:active { opacity:.85; }
-  .photo-label { display:flex;align-items:center;justify-content:center;gap:10px;background:var(--surface);border:1px dashed rgba(240,192,64,0.35);border-radius:var(--radius);padding:16px;cursor:pointer;transition:border-color .15s;width:100%; }
-  .photo-label:active { border-color:var(--accent); }
-  .photo-label span { font-size:14px;color:var(--muted); }
-  .photo-label .ico { font-size:22px; }
-  #photoInput { display:none; }
-  .photo-preview { position:relative;margin-top:8px;border-radius:10px;overflow:hidden;display:none; }
-  .photo-preview img { width:100%;max-height:200px;object-fit:cover;display:block;border-radius:10px; }
-  .photo-remove { position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center; }
 </style>
 </head>
 <body>
@@ -68,18 +60,6 @@
   <div>
     <label>Berichtje (optioneel)</label>
     <textarea id="message" placeholder="Voor de jarige! 🎂"></textarea>
-  </div>
-  <div>
-    <label>Foto (optioneel)</label>
-    <label class="photo-label" for="photoInput">
-      <span class="ico">📷</span>
-      <span id="photoLabelText">📷 Foto maken of uploaden</span>
-    </label>
-    <input type="file" id="photoInput" accept="image/*">
-    <div class="photo-preview" id="photoPreview">
-      <img id="photoImg" src="" alt="preview">
-      <button class="photo-remove" id="photoRemove" type="button">✕</button>
-    </div>
   </div>
   <p class="error-msg" id="errorMsg">Er ging iets mis. Probeer het opnieuw.</p>
   <button type="submit" class="submit-btn" id="submitBtn">Verstuur verzoek 🎶</button>
@@ -106,39 +86,6 @@
 var BIN_ID='6a3fc556da38895dfe07495f';
 var API_KEY='$2a$10$HSvUEG7Tte2c3RiQCZi1XOctWbQheMAIwQqt.EewSIyP6xB5zmGJi';
 
-// Photo handling
-var photoData = '';
-document.getElementById('photoInput').addEventListener('change', function(){
-  var file = this.files[0];
-  if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e){
-    var img = document.getElementById('photoImg');
-    img.src = e.target.result;
-    document.getElementById('photoPreview').style.display = 'block';
-    document.getElementById('photoLabelText').textContent = 'Foto toegevoegd ✓';
-    // Compress to max 600px wide
-    var canvas = document.createElement('canvas');
-    var tmpImg = new Image();
-    tmpImg.onload = function(){
-      var maxW = 600;
-      var ratio = Math.min(1, maxW / tmpImg.width);
-      canvas.width = tmpImg.width * ratio;
-      canvas.height = tmpImg.height * ratio;
-      canvas.getContext('2d').drawImage(tmpImg, 0, 0, canvas.width, canvas.height);
-      photoData = canvas.toDataURL('image/jpeg', 0.7);
-    };
-    tmpImg.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-});
-document.getElementById('photoRemove').addEventListener('click', function(){
-  photoData = '';
-  document.getElementById('photoInput').value = '';
-  document.getElementById('photoPreview').style.display = 'none';
-  document.getElementById('photoLabelText').textContent = 'Maak of upload een foto';
-});
-
 async function saveReq(req){
   try{
     var g=await fetch('https://api.jsonbin.io/v3/b/'+BIN_ID+'/latest',{headers:{'X-Master-Key':API_KEY}});
@@ -161,7 +108,6 @@ document.getElementById('requestForm').addEventListener('submit',async function(
     song:song,
     name:document.getElementById('name').value.trim()||'Anoniem',
     message:document.getElementById('message').value.trim(),
-    photo:photoData,
     time:new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}),
     status:'nieuw'
   });
@@ -179,34 +125,19 @@ document.getElementById('anotherBtn').addEventListener('click',function(){
   document.getElementById('name').value='';
   document.getElementById('message').value='';
   document.getElementById('errorMsg').style.display='none';
-  photoData='';
-  document.getElementById('photoInput').value='';
-  document.getElementById('photoPreview').style.display='none';
-  document.getElementById('photoLabelText').textContent='📷 Foto maken of uploaden';
   document.getElementById('successScreen').style.display='none';
   document.getElementById('requestForm').style.display='flex';
   var btn=document.getElementById('submitBtn');
   btn.disabled=false;btn.textContent='Verstuur verzoek';
 });
 
-document.getElementById('saveContact').addEventListener('click', function(e){
+document.getElementById('saveContact').addEventListener('click',function(e){
   e.preventDefault();
-  var vcard = [
-    'BEGIN:VCARD',
-    'VERSION:3.0',
-    'FN:DJ Passie',
-    'N:Passie;DJ;;;',
-    'TEL;TYPE=CELL:+31683672621',
-    'URL:https://pascaleijkelkamp-dj.github.io/verzoekjes-aan-DJ-Passie/',
-    'NOTE:DJ voor feesten en evenementen',
-    'END:VCARD'
-  ].join('\r\n');
-  var blob = new Blob([vcard], {type:'text/vcard'});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'DJ-Passie.vcf';
-  a.click();
+  var vcard=['BEGIN:VCARD','VERSION:3.0','FN:DJ Passie','N:Passie;DJ;;;','TEL;TYPE=CELL:+31683672621','NOTE:DJ voor feesten en evenementen','END:VCARD'].join('\r\n');
+  var blob=new Blob([vcard],{type:'text/vcard'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;a.download='DJ-Passie.vcf';a.click();
   URL.revokeObjectURL(url);
 });
 </script>
