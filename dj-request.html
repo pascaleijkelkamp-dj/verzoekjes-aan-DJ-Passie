@@ -1,59 +1,85 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verzoekje aan DJ Passie</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --bg:#0d0d0d;--surface:#1a1a1a;--surface2:#242424;--accent:#f0c040;--accent-dim:rgba(240,192,64,0.12);--text:#f0ece4;--muted:#888;--border:rgba(255,255,255,0.08);--radius:14px; }
+  body { background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 0 80px; }
+  header { width:100%;padding:48px 24px 32px;text-align:center; }
+  .badge { display:inline-block;background:var(--accent-dim);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:99px;margin-bottom:20px;border:1px solid rgba(240,192,64,0.25); }
+  h1 { font-size:32px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-bottom:10px; }
+  h1 span { color:var(--accent); }
+  .sub { font-size:15px;color:var(--muted);line-height:1.5; }
+  form { width:100%;max-width:420px;padding:0 20px;display:flex;flex-direction:column;gap:14px; }
+  label { font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px; }
+  input, textarea { width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:16px;padding:14px 16px;font-family:inherit;transition:border-color .15s;outline:none;-webkit-appearance:none; }
+  input:focus, textarea:focus { border-color:rgba(240,192,64,0.5);background:var(--surface2); }
+  input::placeholder, textarea::placeholder { color:var(--muted); }
+  textarea { resize:none;min-height:80px;line-height:1.5; }
+  .submit-btn { margin-top:6px;width:100%;background:var(--accent);color:#0d0d0d;font-size:16px;font-weight:700;padding:16px;border:none;border-radius:var(--radius);cursor:pointer;transition:opacity .15s,transform .1s;font-family:inherit; }
+  .submit-btn:active { transform:scale(0.98);opacity:.9; }
+  .submit-btn:disabled { opacity:.4;cursor:default; }
+  .success-screen { display:none;flex-direction:column;align-items:center;text-align:center;padding:60px 24px 0;gap:16px; }
+  .check-circle { width:72px;height:72px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:30px; }
+  .success-screen h2 { font-size:24px;font-weight:700; }
+  .success-screen p { font-size:15px;color:var(--muted);line-height:1.6;max-width:280px; }
+  .another-btn { margin-top:12px;background:var(--surface);color:var(--text);border:1px solid var(--border);font-size:15px;font-weight:600;padding:13px 28px;border-radius:var(--radius);cursor:pointer;font-family:inherit; }
+  .dj-link { position:fixed;bottom:20px;right:20px;background:var(--surface);border:1px solid var(--border);color:var(--muted);font-size:12px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:99px;letter-spacing:.05em;z-index:10; }
+  .error-msg { font-size:13px;color:#e06060;display:none;margin-top:-6px; }
+  .contact-footer { width:100%;max-width:420px;padding:40px 20px 20px;text-align:center; }
+  .contact-footer .line { width:40px;height:1px;background:rgba(255,255,255,0.1);margin:0 auto 28px; }
+  .contact-footer p { font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:18px; }
+  .contact-footer strong { color:var(--text); }
+  .save-btn { display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid rgba(240,192,64,0.3);color:var(--accent);font-size:14px;font-weight:600;padding:12px 22px;border-radius:99px;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s; }
+  .save-btn:active { background:var(--surface2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">🎵 Verzoekjes</div>
+  <h1>Vraag een nummer<br>aan voor <span>DJ Passie</span></h1>
+  <p class="sub">Vul het formulier in en<br>je verzoek gaat direct naar de mixer.</p>
+</header>
+
+<form id="requestForm">
+  <div>
+    <label>Artiest &amp; nummer *</label>
+    <input type="text" id="song" placeholder="bijv. Marco Borsato – Rood" autocomplete="off" required>
+  </div>
+  <div>
+    <label>Jouw naam (optioneel)</label>
+    <input type="text" id="name" placeholder="bijv. Sanne &amp; Joost" autocomplete="off">
+  </div>
+  <div>
+    <label>Berichtje (optioneel)</label>
+    <textarea id="message" placeholder="Voor de jarige! 🎂"></textarea>
+  </div>
+  <p class="error-msg" id="errorMsg">Er ging iets mis. Probeer het opnieuw.</p>
+  <button type="submit" class="submit-btn" id="submitBtn">Verstuur verzoek 🎶</button>
+</form>
+
+<div class="success-screen" id="successScreen">
+  <div class="check-circle">✓</div>
+  <h2>Verzoek verstuurd!</h2>
+  <p>DJ Passie heeft jouw nummer ontvangen. Houd de dansvloer in de gaten!</p>
+  <button class="another-btn" id="anotherBtn">Nog een verzoek</button>
+</div>
+
+<div class="contact-footer">
+  <div class="line"></div>
+  <p>Zelf een feestje en een DJ nodig?<br>Bel of app <strong>DJ Passie</strong> en informeer naar de mogelijkheden.</p>
+  <a class="save-btn" id="saveContact" href="#">📱 Sla op in contacten</a>
+</div>
+
+<a href="dj-dashboard.html" class="dj-link">🎧 DJ</a>
+
 <script>
-const BIN_ID='6a3fc556da38895dfe07495f';
-const API_KEY='$2a$10$HSvUEG7Tte2c3RiQCZi1XOctWbQheMAIwQqt.EewSIyP6xB5zmGJi';
-const SONGS=[{"a":"Marco Borsato","t":"Dromen Zijn Bedrog"},{"a":"Marco Borsato","t":"Rood"},{"a":"Marco Borsato","t":"Binnen"},{"a":"Marco Borsato","t":"Ik Leef Niet Meer Voor Jou"},{"a":"André Hazes","t":"Zij Gelooft in Mij"},{"a":"André Hazes","t":"Bloed Zweet en Tranen"},{"a":"André Hazes","t":"Zo Zijn We Niet Getrouwd"},{"a":"André Hazes","t":"Kleine Jongen"},{"a":"André Hazes Jr.","t":"Leef"},{"a":"André Hazes Jr.","t":"Voor Jou"},{"a":"Jan Smit","t":"Wat Is Dan Liefde"},{"a":"Jan Smit","t":"Als Je Niet Van Me Houdt"},{"a":"Nick & Simon","t":"Waterkant"},{"a":"Nick & Simon","t":"Aan De Kust"},{"a":"Guus Meeuwis","t":"Brabant"},{"a":"Guus Meeuwis","t":"Per Spoor"},{"a":"Guus Meeuwis","t":"Geef Mij Je Angst"},{"a":"Anouk","t":"Nobody's Wife"},{"a":"Anouk","t":"Lost"},{"a":"Anouk","t":"R U Kiddin' Me"},{"a":"De Dijk","t":"Mag Ik Dan Bij Jou"},{"a":"Boudewijn de Groot","t":"Avond"},{"a":"Acda en de Munnik","t":"Het Is Een Nacht"},{"a":"Acda en de Munnik","t":"Kleine Jongen"},{"a":"Racoon","t":"Oceaan"},{"a":"Racoon","t":"Love You More"},{"a":"Ilse DeLange","t":"World of Hurt"},{"a":"Di-rect","t":"Soldier On"},{"a":"Chef'Special","t":"In Your Arms Tonight"},{"a":"Maan","t":"Elke Keer"},{"a":"Davina Michelle","t":"Hoe Het Voelt"},{"a":"Davina Michelle","t":"Duurt Te Lang"},{"a":"Snelle","t":"Brief aan Mijn Jongere Ik"},{"a":"Snelle","t":"Samen"},{"a":"S10","t":"De Diepte"},{"a":"Froukje","t":"Toch Maar Niet"},{"a":"Nielson","t":"Sexy Als Ik Dans"},{"a":"Duncan Laurence","t":"Arcade"},{"a":"Dua Lipa","t":"Levitating"},{"a":"Dua Lipa","t":"Don't Start Now"},{"a":"Dua Lipa","t":"New Rules"},{"a":"Dua Lipa","t":"One Kiss"},{"a":"Dua Lipa","t":"Physical"},{"a":"Ed Sheeran","t":"Shape of You"},{"a":"Ed Sheeran","t":"Perfect"},{"a":"Ed Sheeran","t":"Thinking Out Loud"},{"a":"Ed Sheeran","t":"Bad Habits"},{"a":"Ed Sheeran","t":"Shivers"},{"a":"Ed Sheeran","t":"Overpass Graffiti"},{"a":"Taylor Swift","t":"Shake It Off"},{"a":"Taylor Swift","t":"Blank Space"},{"a":"Taylor Swift","t":"Anti-Hero"},{"a":"Taylor Swift","t":"Love Story"},{"a":"Taylor Swift","t":"Cruel Summer"},{"a":"Taylor Swift","t":"Lover"},{"a":"Taylor Swift","t":"You Belong With Me"},{"a":"Adele","t":"Hello"},{"a":"Adele","t":"Rolling in the Deep"},{"a":"Adele","t":"Someone Like You"},{"a":"Adele","t":"Easy On Me"},{"a":"Adele","t":"Set Fire to the Rain"},{"a":"Beyoncé","t":"Crazy in Love"},{"a":"Beyoncé","t":"Halo"},{"a":"Beyoncé","t":"Single Ladies"},{"a":"Beyoncé","t":"Love On Top"},{"a":"Beyoncé","t":"Irreplaceable"},{"a":"Bruno Mars","t":"Just the Way You Are"},{"a":"Bruno Mars","t":"Uptown Funk"},{"a":"Bruno Mars","t":"Marry You"},{"a":"Bruno Mars","t":"Count on Me"},{"a":"Bruno Mars","t":"Grenade"},{"a":"Bruno Mars","t":"24K Magic"},{"a":"The Weeknd","t":"Blinding Lights"},{"a":"The Weeknd","t":"Save Your Tears"},{"a":"The Weeknd","t":"Starboy"},{"a":"The Weeknd","t":"Can't Feel My Face"},{"a":"Harry Styles","t":"Watermelon Sugar"},{"a":"Harry Styles","t":"As It Was"},{"a":"Harry Styles","t":"Adore You"},{"a":"Harry Styles","t":"Late Night Talking"},{"a":"Coldplay","t":"Yellow"},{"a":"Coldplay","t":"The Scientist"},{"a":"Coldplay","t":"Fix You"},{"a":"Coldplay","t":"A Sky Full of Stars"},{"a":"Coldplay","t":"My Universe"},{"a":"Coldplay","t":"Clocks"},{"a":"Imagine Dragons","t":"Radioactive"},{"a":"Imagine Dragons","t":"Demons"},{"a":"Imagine Dragons","t":"Thunder"},{"a":"Imagine Dragons","t":"Believer"},{"a":"Imagine Dragons","t":"Enemy"},{"a":"Post Malone","t":"Sunflower"},{"a":"Post Malone","t":"Circles"},{"a":"Post Malone","t":"Rockstar"},{"a":"Post Malone","t":"Better Now"},{"a":"Billie Eilish","t":"Bad Guy"},{"a":"Billie Eilish","t":"Happier Than Ever"},{"a":"Billie Eilish","t":"Ocean Eyes"},{"a":"Billie Eilish","t":"Lovely"},{"a":"Ariana Grande","t":"Thank U, Next"},{"a":"Ariana Grande","t":"7 Rings"},{"a":"Ariana Grande","t":"Problem"},{"a":"Ariana Grande","t":"Into You"},{"a":"Ariana Grande","t":"No Tears Left to Cry"},{"a":"Justin Bieber","t":"Love Yourself"},{"a":"Justin Bieber","t":"Sorry"},{"a":"Justin Bieber","t":"Peaches"},{"a":"Justin Bieber","t":"Stay"},{"a":"Justin Bieber","t":"Baby"},{"a":"Rihanna","t":"Umbrella"},{"a":"Rihanna","t":"We Found Love"},{"a":"Rihanna","t":"Diamonds"},{"a":"Rihanna","t":"Only Girl"},{"a":"Rihanna","t":"Disturbia"},{"a":"Katy Perry","t":"Roar"},{"a":"Katy Perry","t":"Firework"},{"a":"Katy Perry","t":"Dark Horse"},{"a":"Katy Perry","t":"Teenage Dream"},{"a":"Katy Perry","t":"Last Friday Night"},{"a":"Lady Gaga","t":"Bad Romance"},{"a":"Lady Gaga","t":"Poker Face"},{"a":"Lady Gaga","t":"Shallow"},{"a":"Lady Gaga","t":"Just Dance"},{"a":"Lady Gaga","t":"Born This Way"},{"a":"Pink","t":"Just Give Me a Reason"},{"a":"Pink","t":"Try"},{"a":"Pink","t":"Raise Your Glass"},{"a":"Pink","t":"So What"},{"a":"Shakira","t":"Hips Don't Lie"},{"a":"Shakira","t":"Waka Waka"},{"a":"Shakira","t":"Whenever Wherever"},{"a":"Whitney Houston","t":"I Will Always Love You"},{"a":"Whitney Houston","t":"Greatest Love of All"},{"a":"Whitney Houston","t":"I Wanna Dance with Somebody"},{"a":"Mariah Carey","t":"All I Want for Christmas Is You"},{"a":"Mariah Carey","t":"We Belong Together"},{"a":"Mariah Carey","t":"Hero"},{"a":"Alicia Keys","t":"No One"},{"a":"Alicia Keys","t":"If I Ain't Got You"},{"a":"Alicia Keys","t":"Girl on Fire"},{"a":"Alicia Keys","t":"Fallin'"},{"a":"Sam Smith","t":"Stay With Me"},{"a":"Sam Smith","t":"Writing's on the Wall"},{"a":"Sam Smith","t":"Unholy"},{"a":"Sam Smith","t":"I'm Not the Only One"},{"a":"John Legend","t":"All of Me"},{"a":"John Legend","t":"Ordinary People"},{"a":"David Guetta","t":"Titanium"},{"a":"David Guetta","t":"Without You"},{"a":"David Guetta","t":"Hey Mama"},{"a":"David Guetta","t":"Sexy Bitch"},{"a":"Calvin Harris","t":"Summer"},{"a":"Calvin Harris","t":"Feel So Close"},{"a":"Calvin Harris","t":"How Deep Is Your Love"},{"a":"Calvin Harris","t":"This Is What You Came For"},{"a":"Avicii","t":"Wake Me Up"},{"a":"Avicii","t":"Levels"},{"a":"Avicii","t":"The Days"},{"a":"Avicii","t":"Hey Brother"},{"a":"Avicii","t":"Without You"},{"a":"Martin Garrix","t":"Animals"},{"a":"Martin Garrix","t":"In the Name of Love"},{"a":"Martin Garrix","t":"Scared to Be Lonely"},{"a":"Tiësto","t":"The Business"},{"a":"Tiësto","t":"Red Lights"},{"a":"Tiësto","t":"Boom"},{"a":"Queen","t":"Bohemian Rhapsody"},{"a":"Queen","t":"Don't Stop Me Now"},{"a":"Queen","t":"We Will Rock You"},{"a":"Queen","t":"Somebody to Love"},{"a":"Queen","t":"We Are the Champions"},{"a":"Queen","t":"Radio Ga Ga"},{"a":"AC/DC","t":"Highway to Hell"},{"a":"AC/DC","t":"Back in Black"},{"a":"AC/DC","t":"Thunderstruck"},{"a":"The Rolling Stones","t":"Paint It Black"},{"a":"The Rolling Stones","t":"Jumpin' Jack Flash"},{"a":"The Rolling Stones","t":"Sympathy for the Devil"},{"a":"U2","t":"With or Without You"},{"a":"U2","t":"One"},{"a":"U2","t":"Beautiful Day"},{"a":"Bon Jovi","t":"Livin' on a Prayer"},{"a":"Bon Jovi","t":"It's My Life"},{"a":"Bon Jovi","t":"You Give Love a Bad Name"},{"a":"Metallica","t":"Nothing Else Matters"},{"a":"Metallica","t":"Enter Sandman"},{"a":"Metallica","t":"The Unforgiven"},{"a":"Nirvana","t":"Smells Like Teen Spirit"},{"a":"Nirvana","t":"Come as You Are"},{"a":"Nirvana","t":"Heart-Shaped Box"},{"a":"Michael Jackson","t":"Thriller"},{"a":"Michael Jackson","t":"Billie Jean"},{"a":"Michael Jackson","t":"Man in the Mirror"},{"a":"Michael Jackson","t":"Beat It"},{"a":"Michael Jackson","t":"Black or White"},{"a":"Michael Jackson","t":"Smooth Criminal"},{"a":"George Michael","t":"Careless Whisper"},{"a":"George Michael","t":"Faith"},{"a":"George Michael","t":"One More Try"},{"a":"ABBA","t":"Dancing Queen"},{"a":"ABBA","t":"Mamma Mia"},{"a":"ABBA","t":"Fernando"},{"a":"ABBA","t":"The Winner Takes It All"},{"a":"ABBA","t":"Voulez-Vous"},{"a":"Madonna","t":"Like a Prayer"},{"a":"Madonna","t":"Material Girl"},{"a":"Madonna","t":"Vogue"},{"a":"Madonna","t":"Like a Virgin"},{"a":"Elton John","t":"Rocket Man"},{"a":"Elton John","t":"Your Song"},{"a":"Elton John","t":"Tiny Dancer"},{"a":"Elton John","t":"Crocodile Rock"},{"a":"Elton John","t":"I'm Still Standing"},{"a":"David Bowie","t":"Heroes"},{"a":"David Bowie","t":"Life on Mars"},{"a":"David Bowie","t":"Let's Dance"},{"a":"David Bowie","t":"Space Oddity"},{"a":"The Beatles","t":"Hey Jude"},{"a":"The Beatles","t":"Let It Be"},{"a":"The Beatles","t":"Come Together"},{"a":"The Beatles","t":"Yesterday"},{"a":"The Beatles","t":"Here Comes the Sun"},{"a":"Olivia Rodrigo","t":"drivers license"},{"a":"Olivia Rodrigo","t":"good 4 u"},{"a":"Olivia Rodrigo","t":"vampire"},{"a":"Lizzo","t":"About Damn Time"},{"a":"Lizzo","t":"Truth Hurts"},{"a":"Lizzo","t":"Juice"},{"a":"Doja Cat","t":"Say So"},{"a":"Doja Cat","t":"Kiss Me More"},{"a":"Doja Cat","t":"Woman"},{"a":"Glass Animals","t":"Heat Waves"},{"a":"Måneskin","t":"Beggin'"},{"a":"Måneskin","t":"Supermodel"},{"a":"Camila Cabello","t":"Havana"},{"a":"Camila Cabello","t":"Never Be the Same"},{"a":"Shawn Mendes","t":"Stitches"},{"a":"Shawn Mendes","t":"Treat You Better"},{"a":"Shawn Mendes","t":"In My Blood"},{"a":"Selena Gomez","t":"Lose You to Love Me"},{"a":"Selena Gomez","t":"Come & Get It"},{"a":"Selena Gomez","t":"Wolves"},{"a":"Miley Cyrus","t":"Wrecking Ball"},{"a":"Miley Cyrus","t":"Flowers"},{"a":"Miley Cyrus","t":"Party in the U.S.A."},{"a":"Elvis Presley","t":"Can't Help Falling in Love"},{"a":"Elvis Presley","t":"Love Me Tender"},{"a":"Elvis Presley","t":"Jailhouse Rock"},{"a":"Frank Sinatra","t":"My Way"},{"a":"Frank Sinatra","t":"New York New York"},{"a":"Frank Sinatra","t":"Fly Me to the Moon"},{"a":"Frank Sinatra","t":"The Lady Is a Tramp"},{"a":"Dean Martin","t":"That's Amore"},{"a":"Nat King Cole","t":"Unforgettable"},{"a":"Van Morrison","t":"Brown Eyed Girl"},{"a":"Ben E. King","t":"Stand by Me"},{"a":"The Righteous Brothers","t":"Unchained Melody"},{"a":"Eric Clapton","t":"Wonderful Tonight"},{"a":"Eric Clapton","t":"Layla"},{"a":"Pharrell Williams","t":"Happy"},{"a":"Journey","t":"Don't Stop Believin'"},{"a":"Fleetwood Mac","t":"Dreams"},{"a":"Fleetwood Mac","t":"Go Your Own Way"},{"a":"Fleetwood Mac","t":"The Chain"},{"a":"Eagles","t":"Hotel California"},{"a":"Eagles","t":"Take It Easy"},{"a":"Eagles","t":"Desperado"},{"a":"Bob Marley","t":"No Woman No Cry"},{"a":"Bob Marley","t":"One Love"},{"a":"Bob Marley","t":"Redemption Song"},{"a":"Bob Marley","t":"Is This Love"},{"a":"Carly Rae Jepsen","t":"Call Me Maybe"},{"a":"Gotye","t":"Somebody That I Used to Know"},{"a":"fun.","t":"We Are Young"},{"a":"Macklemore","t":"Thrift Shop"},{"a":"Eminem","t":"Lose Yourself"},{"a":"Eminem","t":"Not Afraid"},{"a":"Eminem","t":"Stan"},{"a":"Drake","t":"One Dance"},{"a":"Drake","t":"Hotline Bling"},{"a":"Drake","t":"God's Plan"},{"a":"Kendrick Lamar","t":"HUMBLE."},{"a":"Kendrick Lamar","t":"DNA."},{"a":"Silk Sonic","t":"Leave the Door Open"},{"a":"SZA","t":"Kill Bill"},{"a":"SZA","t":"Good Days"},{"a":"Bad Bunny","t":"Dakiti"},{"a":"J Balvin","t":"Con Altura"},{"a":"Luis Fonsi","t":"Despacito"},{"a":"PSY","t":"Gangnam Style"},{"a":"Pitbull","t":"Give Me Everything"},{"a":"Flo Rida","t":"Good Feeling"},{"a":"LMFAO","t":"Party Rock Anthem"},{"a":"Robin Thicke","t":"Blurred Lines"}];
-
-const SI=document.getElementById('songSearch');
-const RL=document.getElementById('resultsList');
-const SD=document.getElementById('selectedSong');
-const HV=document.getElementById('song');
-
-function norm(s){return s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').trim();}
-
-SI.addEventListener('input',function(){
-  var q=SI.value.trim();
-  if(q.length<2){RL.style.display='none';return;}
-  var nq=norm(q);
-  var words=nq.split(' ').filter(function(w){return w.length>0;});
-  var hits=SONGS.filter(function(s){
-    var hay=norm(s.a+' '+s.t);
-    return words.every(function(w){return hay.indexOf(w)>=0;});
-  }).slice(0,8);
-  RL.innerHTML='';
-  hits.forEach(function(s){
-    var d=document.createElement('div');
-    d.className='result-item';
-    d.innerHTML='<div class="ri">&#127925;</div><div class="rt"><div class="rn">'+esc(s.t)+'</div><div class="ra">'+esc(s.a)+'</div></div>';
-    var lbl=s.a+' – '+s.t;
-    d.addEventListener('touchstart',function(e){e.preventDefault();pick(lbl,s.a,s.t);});
-    d.addEventListener('mousedown',function(){pick(lbl,s.a,s.t);});
-    RL.appendChild(d);
-  });
-  var m=document.createElement('div');
-  m.className='result-item';
-  m.style.opacity='0.65';
-  m.innerHTML='<div class="ri">&#9999;&#65039;</div><div class="rt"><div class="rn" style="font-style:italic;font-weight:400">Staat er niet bij?</div><div class="ra">Verstuur "'+esc(q)+'" direct</div></div>';
-  m.addEventListener('touchstart',function(e){e.preventDefault();pick(q,'',q);});
-  m.addEventListener('mousedown',function(){pick(q,'',q);});
-  RL.appendChild(m);
-  RL.style.display='block';
-});
-
-SI.addEventListener('blur',function(){setTimeout(function(){RL.style.display='none';},200);});
-
-function pick(lbl,artist,title){
-  HV.value=lbl;
-  SI.style.display='none';
-  RL.style.display='none';
-  SD.innerHTML='<div class="selected-song"><div class="si">&#127925;</div><div class="sinfo"><div class="st">'+esc(title||lbl)+'</div>'+(artist?'<div class="sa">'+esc(artist)+'</div>':'')+'</div><button class="sc" id="clr" type="button">&#x2715;</button></div>';
-  SD.style.display='block';
-  document.getElementById('clr').addEventListener('click',reset);
-}
-
-function reset(){
-  HV.value='';SI.value='';SI.style.display='block';
-  SD.style.display='none';SD.innerHTML='';RL.style.display='none';SI.focus();
-}
+var BIN_ID='6a3fc556da38895dfe07495f';
+var API_KEY='$2a$10$HSvUEG7Tte2c3RiQCZi1XOctWbQheMAIwQqt.EewSIyP6xB5zmGJi';
 
 async function saveReq(req){
   try{
@@ -68,17 +94,29 @@ async function saveReq(req){
 
 document.getElementById('requestForm').addEventListener('submit',async function(e){
   e.preventDefault();
-  var song=HV.value.trim();
-  if(!song){SI.focus();SI.style.borderColor='rgba(224,96,96,0.6)';return;}
+  var song=document.getElementById('song').value.trim();
+  if(!song)return;
   var btn=document.getElementById('submitBtn');
   btn.disabled=true;btn.textContent='Versturen...';
-  var ok=await saveReq({id:Date.now(),song:song,name:document.getElementById('name').value.trim()||'Anoniem',message:document.getElementById('message').value.trim(),time:new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}),status:'nieuw'});
-  if(ok){document.getElementById('requestForm').style.display='none';document.getElementById('successScreen').style.display='flex';}
-  else{document.getElementById('errorMsg').style.display='block';btn.disabled=false;btn.textContent='Verstuur verzoek';}
+  var ok=await saveReq({
+    id:Date.now(),
+    song:song,
+    name:document.getElementById('name').value.trim()||'Anoniem',
+    message:document.getElementById('message').value.trim(),
+    time:new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}),
+    status:'nieuw'
+  });
+  if(ok){
+    document.getElementById('requestForm').style.display='none';
+    document.getElementById('successScreen').style.display='flex';
+  }else{
+    document.getElementById('errorMsg').style.display='block';
+    btn.disabled=false;btn.textContent='Verstuur verzoek';
+  }
 });
 
 document.getElementById('anotherBtn').addEventListener('click',function(){
-  reset();
+  document.getElementById('song').value='';
   document.getElementById('name').value='';
   document.getElementById('message').value='';
   document.getElementById('errorMsg').style.display='none';
@@ -88,5 +126,26 @@ document.getElementById('anotherBtn').addEventListener('click',function(){
   btn.disabled=false;btn.textContent='Verstuur verzoek';
 });
 
-function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+document.getElementById('saveContact').addEventListener('click', function(e){
+  e.preventDefault();
+  var vcard = [
+    'BEGIN:VCARD',
+    'VERSION:3.0',
+    'FN:DJ Passie',
+    'N:Passie;DJ;;;',
+    'TEL;TYPE=CELL:+31683672621',
+    'URL:https://pascaleijkelkamp-dj.github.io/verzoekjes-aan-DJ-Passie/',
+    'NOTE:DJ voor feesten en evenementen',
+    'END:VCARD'
+  ].join('\r\n');
+  var blob = new Blob([vcard], {type:'text/vcard'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'DJ-Passie.vcf';
+  a.click();
+  URL.revokeObjectURL(url);
+});
 </script>
+</body>
+</html>
