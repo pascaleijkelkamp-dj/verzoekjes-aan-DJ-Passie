@@ -50,6 +50,7 @@
   .status-pill.speelt { background: var(--green-dim); color: var(--green); }
   .status-pill.gespeeld { background: rgba(255,255,255,0.06); color: var(--muted); }
   .status-pill.overgeslagen { background: var(--red-dim); color: var(--red); }
+  .req-photo { width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-bottom:10px;display:block; }
   .clear-btn { display: block; width: 100%; margin-top: 16px; background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 13px; font-weight: 600; padding: 12px; border-radius: var(--radius); cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; }
   .clear-btn:hover { border-color: var(--red); color: var(--red); }
   .setup-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
@@ -189,8 +190,8 @@ function renderRequests() {
     if (req.status === 'speelt') pillHtml = '<span class="status-pill speelt">Speelt nu</span>';
     else if (req.status === 'gespeeld') pillHtml = '<span class="status-pill gespeeld">Gespeeld</span>';
     else if (req.status === 'overgeslagen') pillHtml = '<span class="status-pill overgeslagen">Overgeslagen</span>';
-    const artworkHtml = req.artwork ? '<img src="' + req.artwork + '" style="width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0" alt="">' : '';
-    card.innerHTML = '<div class="card-top" style="display:flex;gap:12px;align-items:flex-start"><div style="flex:1"><div class="song-name">' + escHtml(req.song) + pillHtml + '</div><div class="requester" style="margin-top:4px">Door <strong>' + escHtml(req.name) + '</strong></div></div>' + artworkHtml + '<div class="time-badge">' + escHtml(req.time) + '</div></div>' + (req.message ? '<div class="note" style="margin-top:8px">"' + escHtml(req.message) + '"</div>' : '') + '<div class="card-actions" style="margin-top:10px"><button class="action-btn play" data-action="speelt" data-id="' + req.id + '">▶ Speel nu</button><button class="action-btn" data-action="gespeeld" data-id="' + req.id + '">✓ Gespeeld</button><button class="action-btn skip" data-action="overgeslagen" data-id="' + req.id + '">✕ Sla over</button></div>';
+    const photoHtml = req.photo ? '<img class="req-photo" src="' + req.photo + '" alt="foto">' : '';
+    card.innerHTML = photoHtml + '<div class="card-top"><div class="song-name">' + escHtml(req.song) + pillHtml + '</div><div class="time-badge">' + escHtml(req.time) + '</div></div><div class="requester">Door <strong>' + escHtml(req.name) + '</strong></div>' + (req.message ? '<div class="note">"' + escHtml(req.message) + '"</div>' : '') + '<div class="card-actions"><button class="action-btn play" data-action="speelt" data-id="' + req.id + '">▶ Speel nu</button><button class="action-btn" data-action="gespeeld" data-id="' + req.id + '">✓ Gespeeld</button><button class="action-btn skip" data-action="overgeslagen" data-id="' + req.id + '">✕ Sla over</button></div>';
     if (isNew) setTimeout(() => card.classList.remove('new-card'), 3000);
     const cards = list.querySelectorAll('[data-id]');
     if (idx < cards.length) list.insertBefore(card, cards[idx]);
