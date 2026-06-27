@@ -113,27 +113,14 @@
 </div>
 
 <script>
-let BIN_ID = localStorage.getItem('djp_bin_id') || '';
-let API_KEY = localStorage.getItem('djp_api_key') || '';
+let BIN_ID = '6a3fc556da38895dfe07495f';
+let API_KEY = '$2a$10$HSvUEG7Tte2c3RiQCZi1XOctWbQheMAIwQqt.EewSIyP6xB5zmGJi';
 let allRequests = [];
 let currentTab = 'nieuw';
 let knownIds = new Set();
 let isFirstLoad = true;
 
-if (!BIN_ID || !API_KEY) {
-  document.getElementById('setupModal').style.display = 'flex';
-}
 
-document.getElementById('saveSetup').addEventListener('click', () => {
-  const b = document.getElementById('inputBinId').value.trim();
-  const k = document.getElementById('inputApiKey').value.trim();
-  if (!b || !k) { alert('Vul beide velden in'); return; }
-  localStorage.setItem('djp_bin_id', b);
-  localStorage.setItem('djp_api_key', k);
-  BIN_ID = b; API_KEY = k;
-  document.getElementById('setupModal').style.display = 'none';
-  poll();
-});
 
 async function loadRequests() {
   if (!BIN_ID || !API_KEY) return [];
@@ -202,7 +189,8 @@ function renderRequests() {
     if (req.status === 'speelt') pillHtml = '<span class="status-pill speelt">Speelt nu</span>';
     else if (req.status === 'gespeeld') pillHtml = '<span class="status-pill gespeeld">Gespeeld</span>';
     else if (req.status === 'overgeslagen') pillHtml = '<span class="status-pill overgeslagen">Overgeslagen</span>';
-    card.innerHTML = '<div class="card-top"><div class="song-name">' + escHtml(req.song) + pillHtml + '</div><div class="time-badge">' + escHtml(req.time) + '</div></div><div class="requester">Door <strong>' + escHtml(req.name) + '</strong></div>' + (req.message ? '<div class="note">"' + escHtml(req.message) + '"</div>' : '') + '<div class="card-actions"><button class="action-btn play" data-action="speelt" data-id="' + req.id + '">▶ Speel nu</button><button class="action-btn" data-action="gespeeld" data-id="' + req.id + '">✓ Gespeeld</button><button class="action-btn skip" data-action="overgeslagen" data-id="' + req.id + '">✕ Sla over</button></div>';
+    const artworkHtml = req.artwork ? '<img src="' + req.artwork + '" style="width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0" alt="">' : '';
+    card.innerHTML = '<div class="card-top" style="display:flex;gap:12px;align-items:flex-start"><div style="flex:1"><div class="song-name">' + escHtml(req.song) + pillHtml + '</div><div class="requester" style="margin-top:4px">Door <strong>' + escHtml(req.name) + '</strong></div></div>' + artworkHtml + '<div class="time-badge">' + escHtml(req.time) + '</div></div>' + (req.message ? '<div class="note" style="margin-top:8px">"' + escHtml(req.message) + '"</div>' : '') + '<div class="card-actions" style="margin-top:10px"><button class="action-btn play" data-action="speelt" data-id="' + req.id + '">▶ Speel nu</button><button class="action-btn" data-action="gespeeld" data-id="' + req.id + '">✓ Gespeeld</button><button class="action-btn skip" data-action="overgeslagen" data-id="' + req.id + '">✕ Sla over</button></div>';
     if (isNew) setTimeout(() => card.classList.remove('new-card'), 3000);
     const cards = list.querySelectorAll('[data-id]');
     if (idx < cards.length) list.insertBefore(card, cards[idx]);
@@ -246,7 +234,7 @@ async function poll() {
   if (hasNew || isFirstLoad) { renderRequests(); isFirstLoad = false; }
 }
 
-if (BIN_ID && API_KEY) { poll(); setInterval(poll, 4000); }
+poll(); setInterval(poll, 4000);
 </script>
 </body>
 </html>
