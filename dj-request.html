@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verzoekje aan DJ Passie</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #050510;
+    --surface: rgba(10,10,40,0.85);
+    --surface2: rgba(20,20,60,0.90);
+    --pink: #ff2d9b;
+    --cyan: #00f5ff;
+    --purple: #b44fff;
+    --gold: #ffd700;
+    --text: #ffffff;
+    --muted: #aaa;
+    --radius: 14px;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 0 0 80px; position: relative; overflow-x: hidden; }
+
+  /* Animated disco background */
+  .disco-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .disco-bg::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(180,79,255,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(255,45,155,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 60% 80%, rgba(0,245,255,0.10) 0%, transparent 60%);
+    animation: bgshift 8s ease-in-out infinite alternate;
+  }
+  @keyframes bgshift {
+    0% { opacity: 0.6; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* Disco ball rays */
+  .rays { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; z-index: 0; pointer-events: none; }
+  .ray { position: absolute; top: 100px; left: 100px; width: 2px; height: 300px; transform-origin: top center; animation: spin 4s linear infinite; }
+  .ray::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent); border-radius: 99px; }
+
+  /* Floating lights */
+  .lights { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .light { position: absolute; border-radius: 50%; filter: blur(40px); animation: floatlight linear infinite; }
+
+  @keyframes floatlight {
+    0% { transform: translateY(0) scale(1); opacity: 0.4; }
+    50% { opacity: 0.8; transform: translateY(-30px) scale(1.2); }
+    100% { transform: translateY(0) scale(1); opacity: 0.4; }
+  }
+
+  /* Glitter particles */
+  .glitter { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .glitter span { position: absolute; width: 3px; height: 3px; border-radius: 50%; animation: twinkle linear infinite; }
+  @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0)} 50%{opacity:1;transform:scale(1)} }
+
+  body > *:not(.disco-bg):not(.rays):not(.lights):not(.glitter) { position: relative; z-index: 1; }
+
+  /* DJ Ball */
+  .disco-ball {
+    width: 90px; height: 90px;
+    background: radial-gradient(circle at 35% 35%, #fff 0%, #aaa 40%, #555 100%);
+    border-radius: 50%;
+    margin: 32px auto 0;
+    position: relative;
+    box-shadow: 0 0 30px rgba(255,255,255,0.3), 0 0 60px rgba(0,245,255,0.2);
+    animation: ballspin 6s linear infinite;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  @keyframes ballspin { 0%{box-shadow:0 0 30px var(--pink),0 0 60px var(--purple)} 33%{box-shadow:0 0 30px var(--cyan),0 0 60px var(--pink)} 66%{box-shadow:0 0 30px var(--purple),0 0 60px var(--cyan)} 100%{box-shadow:0 0 30px var(--pink),0 0 60px var(--purple)} }
+  .ball-grid { position: absolute; inset: 0; }
+  .ball-grid::before, .ball-grid::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 8px),
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 8px);
+    border-radius: 50%;
+  }
+
+  header { width: 100%; text-align: center; padding-bottom: 24px; }
+
+  h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: 38px;
+    line-height: 1.05;
+    letter-spacing: .03em;
+    margin: 16px 0 6px;
+    background: linear-gradient(135deg, var(--pink), var(--purple), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(255,45,155,0.5));
+    animation: textglow 3s ease-in-out infinite alternate;
+  }
+  @keyframes textglow {
+    0% { filter: drop-shadow(0 0 10px rgba(255,45,155,0.6)); }
+    100% { filter: drop-shadow(0 0 20px rgba(0,245,255,0.6)); }
+  }
+
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: #fff;
+    font-family: 'Anton', sans-serif;
+    font-size: 12px;
+    letter-spacing: .15em;
+    padding: 6px 20px;
+    border-radius: 99px;
+    margin-bottom: 4px;
+    box-shadow: 0 0 20px rgba(255,45,155,0.5);
+    animation: badgepulse 2s ease-in-out infinite;
+  }
+  @keyframes badgepulse {
+    0%,100% { box-shadow: 0 0 15px rgba(255,45,155,0.5); }
+    50% { box-shadow: 0 0 30px rgba(0,245,255,0.7); }
+  }
+  .sub { font-size: 15px; color: #ccc; line-height: 1.5; }
+
+  form {
+    width: calc(100% - 32px);
+    max-width: 420px;
+    background: var(--surface);
+    border: 1px solid rgba(255,45,155,0.3);
+    border-radius: 20px;
+    padding: 24px 20px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 0 40px rgba(180,79,255,0.2), 0 4px 32px rgba(0,0,0,0.6);
+  }
+  .form-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 20px;
+    letter-spacing: .05em;
+    text-align: center;
+    background: linear-gradient(135deg, var(--cyan), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  label { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--cyan); display: block; margin-bottom: 6px; }
+  input, textarea {
+    width: 100%;
+    background: rgba(0,0,20,0.7);
+    border: 1px solid rgba(0,245,255,0.25);
+    border-radius: var(--radius);
+    color: #fff;
+    font-size: 16px;
+    padding: 14px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    outline: none;
+    -webkit-appearance: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  input:focus, textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0,245,255,0.3);
+  }
+  input::placeholder, textarea::placeholder { color: #444; }
+  textarea { resize: none; min-height: 80px; line-height: 1.5; }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 50%, var(--cyan) 100%);
+    background-size: 200% 200%;
+    color: #fff;
+    font-family: 'Anton', sans-serif;
+    font-size: 22px;
+    letter-spacing: .1em;
+    padding: 18px;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    animation: btnshift 3s ease infinite;
+    box-shadow: 0 4px 24px rgba(255,45,155,0.5);
+    transition: transform .1s, opacity .15s;
+  }
+  @keyframes btnshift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .submit-btn:active { transform: scale(0.98); opacity: .9; }
+  .submit-btn:disabled { opacity: .4; cursor: default; animation: none; background: #444; }
+
+  .error-msg { font-size: 13px; color: #ff6060; display: none; text-align: center; font-weight: 800; }
+
+  .success-screen {
+    display: none; flex-direction: column; align-items: center;
+    text-align: center; padding: 40px 24px 0; gap: 16px;
+    width: 100%; max-width: 420px;
+  }
+  .check-circle {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px;
+    box-shadow: 0 0 40px rgba(255,45,155,0.6);
+    animation: successpulse 1.5s ease-in-out infinite;
+  }
+  @keyframes successpulse { 0%,100%{box-shadow:0 0 30px rgba(255,45,155,0.5)} 50%{box-shadow:0 0 60px rgba(0,245,255,0.7)} }
+  .success-screen h2 {
+    font-family: 'Anton', sans-serif; font-size: 30px;
+    background: linear-gradient(135deg, var(--gold), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .success-screen p { font-size: 15px; color: #ccc; line-height: 1.6; max-width: 280px; font-weight: 700; }
+  .another-btn {
+    background: rgba(0,0,20,0.8); color: var(--cyan);
+    border: 1px solid var(--cyan); font-size: 15px; font-weight: 800;
+    padding: 13px 28px; border-radius: var(--radius);
+    cursor: pointer; font-family: 'Nunito', sans-serif;
+    box-shadow: 0 0 12px rgba(0,245,255,0.3);
+  }
+
+  .contact-footer { width: 100%; max-width: 420px; padding: 44px 20px 24px; text-align: center; }
+  .contact-footer .line { width: 60px; height: 2px; background: linear-gradient(90deg, var(--pink), var(--cyan)); margin: 0 auto 28px; border-radius: 99px; }
+  .contact-footer .cf-title { font-family: 'Anton', sans-serif; font-size: 18px; letter-spacing: .08em; color: var(--gold); margin-bottom: 12px; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+  .contact-footer p { font-size: 15px; color: #ddd; line-height: 1.75; margin-bottom: 10px; font-weight: 700; }
+  .contact-footer .phone { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 24px; display: block; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+  .save-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    border: none; color: #fff; font-size: 15px; font-weight: 800;
+    padding: 15px 28px; border-radius: 99px; text-decoration: none;
+    font-family: 'Nunito', sans-serif;
+    box-shadow: 0 4px 20px rgba(180,79,255,0.5);
+  }
+</style>
+</head>
+<body>
+
+<div class="disco-bg"></div>
+
+<!-- Floating lights -->
+<div class="lights" id="lights"></div>
+
+<!-- Glitter -->
+<div class="glitter" id="glitter"></div>
+
+<header>
+  <div class="disco-ball">
+    <div class="ball-grid"></div>
+  </div>
+  <div class="badge">✨ DJ PASSIE ✨</div>
+  <h1>VRAAG EEN<br>NUMMER AAN!</h1>
+  <p class="sub">Stuur je verzoek direct naar de mixer</p>
+</header>
+
+<form id="requestForm">
+  <div class="form-title">🎵 Jouw verzoekje</div>
+  <div>
+    <label>Artiest &amp; nummer *</label>
+    <input type="text" id="song" placeholder="bijv. Marco Borsato – Rood" autocomplete="off" required>
+  </div>
+  <div>
+    <label>Jouw naam (optioneel)</label>
+    <input type="text" id="name" placeholder="bijv. Sanne &amp; Joost" autocomplete="off">
+  </div>
+  <div>
+    <label>Berichtje (optioneel)</label>
+    <textarea id="message" placeholder="Voor de jarige! 🎂"></textarea>
+  </div>
+  <p class="error-msg" id="errorMsg">Er ging iets mis. Probeer het opnieuw.</p>
+  <button type="submit" class="submit-btn" id="submitBtn">🎶 VERSTUUR VERZOEK!</button>
+</form>
+
+<div class="success-screen" id="successScreen">
+  <div class="check-circle">✓</div>
+  <h2>VERZOEK BINNEN!</h2>
+  <p>DJ Passie heeft jouw nummer ontvangen.<br>Houd de dansvloer in de gaten! 🕺</p>
+  <button class="another-btn" id="anotherBtn">➕ Nog een verzoek</button>
+</div>
+
+<div class="contact-footer">
+  <div class="line"></div>
+  <div class="cf-title">🎉 EIGEN FEESTJE PLANNEN?</div>
+  <p>Zelf een DJ nodig voor jouw feest of evenement?<br>Bel of app <strong>DJ Passie</strong> en informeer vrijblijvend naar de mogelijkheden.</p>
+  <span class="phone">📞 +31 6 83 67 26 21</span>
+  <a class="save-btn" href="https://pascaleijkelkamp-dj.github.io/verzoekjes-aan-DJ-Passie/DJ-Passie.vcf">👤 Sla DJ Passie op in contacten</a>
+</div>
+
+<script>
+// Floating lights
+(function(){
+  var colors=['rgba(255,45,155,0.4)','rgba(0,245,255,0.3)','rgba(180,79,255,0.4)','rgba(255,215,0,0.2)'];
+  var l=document.getElementById('lights');
+  for(var i=0;i<6;i++){
+    var d=document.createElement('div');
+    d.className='light';
+    d.style.width=(80+Math.random()*120)+'px';
+    d.style.height=d.style.width;
+    d.style.left=(Math.random()*100)+'%';
+    d.style.top=(Math.random()*100)+'%';
+    d.style.background=colors[Math.floor(Math.random()*colors.length)];
+    d.style.animationDuration=(4+Math.random()*6)+'s';
+    d.style.animationDelay=(Math.random()*4)+'s';
+    l.appendChild(d);
+  }
+})();
+
+// Glitter
+(function(){
+  var colors=['#ff2d9b','#00f5ff','#b44fff','#ffd700','#ffffff'];
+  var g=document.getElementById('glitter');
+  for(var i=0;i<40;i++){
+    var s=document.createElement('span');
+    s.style.left=(Math.random()*100)+'%';
+    s.style.top=(Math.random()*100)+'%';
+    s.style.background=colors[Math.floor(Math.random()*colors.length)];
+    s.style.animationDuration=(1+Math.random()*3)+'s';
+    s.style.animationDelay=(Math.random()*4)+'s';
+    g.appendChild(s);
+  }
+})();
+
+var DB='https://dj-passie-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+async function saveReq(req){
+  try{
+    var res=await fetch(DB+'/verzoeken.json',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(req)
+    });
+    return res.ok;
+  }catch(e){return false;}
+}
+
+document.getElementById('requestForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  var song=document.getElementById('song').value.trim();
+  if(!song)return;
+  var btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.textContent='Versturen...';
+  var ok=await saveReq({
+    song:song,
+    name:document.getElementById('name').value.trim()||'Anoniem',
+    message:document.getElementById('message').value.trim(),
+    time:new Date().toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'}),
+    status:'nieuw',
+    ts:Date.now()
+  });
+  if(ok){
+    document.getElementById('requestForm').style.display='none';
+    document.getElementById('successScreen').style.display='flex';
+  }else{
+    document.getElementById('errorMsg').style.display='block';
+    btn.disabled=false; btn.textContent='🎶 VERSTUUR VERZOEK!';
+  }
+});
+
+document.getElementById('anotherBtn').addEventListener('click',function(){
+  document.getElementById('song').value='';
+  document.getElementById('name').value='';
+  document.getElementById('message').value='';
+  document.getElementById('errorMsg').style.display='none';
+  document.getElementById('successScreen').style.display='none';
+  document.getElementById('requestForm').style.display='flex';
+  var btn=document.getElementById('submitBtn');
+  btn.disabled=false; btn.textContent='🎶 VERSTUUR VERZOEK!';
+});
+</script>
+</body>
+</html>
